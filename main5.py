@@ -72,24 +72,22 @@ def generate_data():
 # Запускаємо функцію для генерації даних
 generate_data()
 
-# Завдання 1: Знаходження 5 студентів з найбільшим середнім балом
-def find_top_students():
-    cursor.execute('''SELECT students.id, students.name, AVG(grades.grade) AS avg_grade
-                      FROM students
-                      JOIN grades ON students.id = grades.student_id
-                      GROUP BY students.id, students.name
-                      ORDER BY avg_grade DESC
-                      LIMIT 5''')
+# Викликаємо завдання 5
+def find_courses_taught_by_teacher(teacher_name):
+    cursor.execute('''SELECT subjects.name
+                      FROM subjects
+                      JOIN teachers ON subjects.teacher_id = teachers.id
+                      WHERE teachers.name = ?''', (teacher_name,))
+    courses_taught = cursor.fetchall()
+    if courses_taught:
+        print(f"Courses taught by {teacher_name}:")
+        for course in courses_taught:
+            print(course[0])
+    else:
+        print(f"No courses found for {teacher_name}")
 
-    top_students = cursor.fetchall()
-
-    print("Top 5 students with highest average grades:")
-    for student in top_students:
-        print(f"Student ID: {student[0]}, Name: {student[1]}, Average Grade: {student[2]}")
-
-# Викликаємо функцію для завдання 1
-find_top_students()
-
+# Викликаємо функцію для знаходження курсів, які читає певний викладач
+find_courses_taught_by_teacher('Kathleen Sawyer')
 
 # Закриваємо підключення до бази даних
 conn.close()

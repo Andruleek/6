@@ -72,24 +72,14 @@ def generate_data():
 # Запускаємо функцію для генерації даних
 generate_data()
 
-# Завдання 1: Знаходження 5 студентів з найбільшим середнім балом
-def find_top_students():
-    cursor.execute('''SELECT students.id, students.name, AVG(grades.grade) AS avg_grade
-                      FROM students
-                      JOIN grades ON students.id = grades.student_id
-                      GROUP BY students.id, students.name
-                      ORDER BY avg_grade DESC
-                      LIMIT 5''')
+# Завдання 4: Знаходження середнього балу загалом
+def find_average_grade_overall():
+    cursor.execute('''SELECT AVG(grade) AS avg_grade_overall FROM grades''')
+    average_grade_overall = cursor.fetchone()[0]
+    print(f"Average grade overall: {average_grade_overall}")
 
-    top_students = cursor.fetchall()
-
-    print("Top 5 students with highest average grades:")
-    for student in top_students:
-        print(f"Student ID: {student[0]}, Name: {student[1]}, Average Grade: {student[2]}")
-
-# Викликаємо функцію для завдання 1
-find_top_students()
-
+# Викликаємо функцію для завдання 4
+find_average_grade_overall()
 
 # Закриваємо підключення до бази даних
 conn.close()
