@@ -1,3 +1,15 @@
+import sqlite3
+from faker import Faker
+import random
+
+
+# Ініціалізуємо Faker для генерації випадкових даних
+fake = Faker()
+
+# Підключаємося до бази даних
+conn = sqlite3.connect('university.db')
+cursor = conn.cursor()
+
 # Завдання 2: Знаходження найкращого студента з певного предмета
 def find_top_student_in_subject(subject_name):
     cursor.execute('''SELECT students.id, students.name, AVG(grades.grade) AS avg_grade

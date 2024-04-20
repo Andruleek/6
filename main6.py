@@ -1,3 +1,15 @@
+import sqlite3
+from faker import Faker
+import random
+
+
+# Ініціалізуємо Faker для генерації випадкових даних
+fake = Faker()
+
+# Підключаємося до бази даних
+conn = sqlite3.connect('university.db')
+cursor = conn.cursor()
+
 # Викликаємо завдання 6
 def find_students_in_group(group_name):
     cursor.execute('''SELECT students.name

@@ -29,6 +29,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS subjects (
                     name TEXT,
                     teacher_id INTEGER)''')
 
+
 cursor.execute('''CREATE TABLE IF NOT EXISTS grades (
                     id INTEGER PRIMARY KEY,
                     student_id INTEGER,

@@ -1,3 +1,15 @@
+import sqlite3
+from faker import Faker
+import random
+
+
+# Ініціалізуємо Faker для генерації випадкових даних
+fake = Faker()
+
+# Підключаємося до бази даних
+conn = sqlite3.connect('university.db')
+cursor = conn.cursor()
+
 # Викликаємо завдання 8
 def find_average_grade_given_by_teacher(teacher_name):
     cursor.execute('''SELECT AVG(grades.grade) AS average_grade, subjects.name

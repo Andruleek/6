@@ -1,3 +1,15 @@
+import sqlite3
+from faker import Faker
+import random
+
+
+# Ініціалізуємо Faker для генерації випадкових даних
+fake = Faker()
+
+# Підключаємося до бази даних
+conn = sqlite3.connect('university.db')
+cursor = conn.cursor()
+
 # Викликаємо завдання 10
 def find_courses_taught_to_student_by_teacher(student_name, teacher_name):
     cursor.execute('''SELECT subjects.name

@@ -1,3 +1,15 @@
+import sqlite3
+from faker import Faker
+import random
+
+
+# Ініціалізуємо Faker для генерації випадкових даних
+fake = Faker()
+
+# Підключаємося до бази даних
+conn = sqlite3.connect('university.db')
+cursor = conn.cursor()
+
 # Завдання 3: Знаходження середнього балу по групах для певного предмета
 def find_average_grade_by_group(subject_name):
     cursor.execute('''SELECT groups.name, AVG(grades.grade) AS avg_grade
