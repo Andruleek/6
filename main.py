@@ -1,7 +1,26 @@
 import sqlite3
 from faker import Faker
 import random
+from main2 import function_from_main2
+from main3 import function_from_main3
+from main4 import function_from_main4
+from main5 import function_from_main5
+from main6 import function_from_main6
+from main7 import function_from_main7
+from main8 import function_from_main8
+from main9 import function_from_main9
+from main10 import function_from_main10
 
+# Виклик функцій з імпортованих файлів
+function_from_main2()
+function_from_main3()
+function_from_main4()
+function_from_main5()
+function_from_main6()
+function_from_main7()
+function_from_main8()
+function_from_main9()
+function_from_main10()
 
 # Ініціалізуємо Faker для генерації випадкових даних
 fake = Faker()
@@ -39,7 +58,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS grades (
 
 # Генеруємо дані для студентів, груп, викладачів та предметів
 def generate_data():
-    groups = ['Group A', 'Group B', 'Group C']
+    groups = ['Group 1', 'Group 2', 'Group 3']
     for group_name in groups:
         cursor.execute('''INSERT INTO groups (name) VALUES (?)''', (group_name,))
 
@@ -54,8 +73,8 @@ def generate_data():
     # Цикл для вставки кожного імені вчителя у таблицю
     for teacher_name in teachers:
         cursor.execute('''INSERT INTO teachers (name) VALUES (?)''', (teacher_name,))
-    
-    subjects = [('Mathematics', 1), ('Physics', 2), ('Biology', 3), ('Chemistry', 1), ('History', 2)]
+        
+    subjects = [('Mathematics', 1), ('Physics', 2), ('Biology', 3), ('Chemistry', 4), ('History', 5)]
     for subject in subjects:
         cursor.execute('''INSERT INTO subjects (name, teacher_id) VALUES (?, ?)''', subject)
 

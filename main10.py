@@ -1,33 +1,44 @@
-import sqlite3
 from faker import Faker
 import random
 
+fake = Faker('uk_UA')
 
-# Ініціалізуємо Faker для генерації випадкових даних
-fake = Faker()
+# Створення списку курсів
+courses = [fake.job() for _ in range(10)]
 
-# Підключаємося до бази даних
-conn = sqlite3.connect('university.db')
-cursor = conn.cursor()
+# Створення списку студентів та викладачів
+students = [fake.name() for _ in range(20)]
+teachers = [fake.name() for _ in range(5)]
 
-# Викликаємо завдання 10
-def find_courses_taught_to_student_by_teacher(student_name, teacher_name):
-    cursor.execute('''SELECT subjects.name
-                      FROM subjects
-                      JOIN grades ON subjects.id = grades.subject_id
-                      JOIN students ON grades.student_id = students.id
-                      JOIN teachers ON subjects.teacher_id = teachers.id
-                      WHERE students.name = ? AND teachers.name = ?''', (student_name, teacher_name))
-    courses_taught = cursor.fetchall()
-    if courses_taught:
-        print(f"Courses taught by {teacher_name} to {student_name}:")
-        for course in courses_taught:
-            print(course[0])
+# Створення словника, що зв'язує кожного студента з його курсами
+students_courses = {student: random.sample(courses, random.randint(1, 3)) for student in students}
+
+# Створення словника, що зв'язує кожен курс з викладачем
+courses_teachers = {course: random.choice(teachers) for course in courses}
+
+# Функція для знаходження курсів, які відвідує певний студент
+def find_courses_for_student(student_name):
+    if student_name in students_courses:
+        return students_courses[student_name]
     else:
-        print(f"No courses found for {student_name} taught by {teacher_name}")
+        return "Студент не знайдений"
 
-# Викликаємо функцію для знаходження курсів, які відвідує певний студент, викладачем якого є певна особа
-find_courses_taught_to_student_by_teacher('Donna Williamson', 'Jennifer Casey')
+# Функція для знаходження викладача, який веде певний курс
+def find_teacher_for_course(course_name):
+    if course_name in courses_teachers:
+        return courses_teachers[course_name]
+    else:
+        return "Курс не знайдений"
 
-# Закриваємо підключення до бази даних
-conn.close()
+# Приклад використання
+student_name = random.choice(students)
+print(f"Студент {student_name} відвідує курси:")
+print(find_courses_for_student(student_name))
+
+course_name = random.choice(courses)
+print(f"Курс {course_name} веде викладач:")
+print(find_teacher_for_course(course_name))
+
+
+def function_from_main10():
+    print("This is a function from main10.py")

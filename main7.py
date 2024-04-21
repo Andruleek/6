@@ -1,33 +1,23 @@
-import sqlite3
 from faker import Faker
 import random
 
-
-# Ініціалізуємо Faker для генерації випадкових даних
 fake = Faker()
 
-# Підключаємося до бази даних
-conn = sqlite3.connect('university.db')
-cursor = conn.cursor()
+# Генеруємо фіктивну базу даних студентів та їх оцінок
+students = [{'name': fake.name(), 'group': random.randint(1, 5), 'subject': fake.word()} for _ in range(50)]
+grades = [{'student_name': student['name'], 'grade': round(random.uniform(60, 100), 2)} for student in students]
 
-# Викликаємо завдання 7
-def find_out_the_grades_of_students_from_the_same_group_in_the_singing_subject(subject_name, group_name):
-    cursor.execute('''SELECT students.name, grades.grade
-                      FROM students
-                      JOIN groups ON students.group_id = groups.id
-                      JOIN grades ON students.id = grades.student_id
-                      JOIN subjects ON grades.subject_id = subjects.id
-                      WHERE groups.name = ? AND subjects.name = ?''', (group_name, subject_name))
-    student_grades = cursor.fetchall()
-    if student_grades:
-        print(f"Grades of students in group {group_name} for {subject_name}:")
-        for student_grade in student_grades:
-            print(f"Student: {student_grade[0]}, Grade: {student_grade[1]}")
-    else:
-        print(f"No grades found for students in group {group_name} for {subject_name}")
+# Функція для знаходження оцінок студентів у конкретній групі з певного предмета
+def find_grades(group, subject):
+    group_grades = [grade['grade'] for grade in grades if grade['student_name'] in [student['name'] for student in students if student['group'] == group and student['subject'] == subject]]
+    return group_grades
 
-# Виклик функції для знаходження оцінок студентів у групі 'Group B' з предмету 'History'
-find_out_the_grades_of_students_from_the_same_group_in_the_singing_subject('History', 'Group B')
+# Приклад використання функції
+group = 3
+subject = "Biology"
+group_grades = find_grades(group, subject)
+print(f"Оцінки студентів у групі {group} з предмета {subject}: {group_grades}")
 
-# Закриваємо підключення до бази даних
-conn.close()
+
+def function_from_main7():
+    print("This is a function from main7.py")

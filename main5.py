@@ -1,31 +1,27 @@
-import sqlite3
 from faker import Faker
 import random
 
-
-# Ініціалізуємо Faker для генерації випадкових даних
+# Створення відомостей про викладачів та курси
 fake = Faker()
 
-# Підключаємося до бази даних
-conn = sqlite3.connect('university.db')
-cursor = conn.cursor()
+# Створення списку викладачів і курсів
+teachers = [fake.name() for _ in range(5)]
+courses = [fake.catch_phrase() for _ in range(10)]
 
-# Викликаємо завдання 5
-def find_courses_taught_by_teacher(teacher_name):
-    cursor.execute('''SELECT subjects.name
-                      FROM subjects
-                      JOIN teachers ON subjects.teacher_id = teachers.id
-                      WHERE teachers.name = ?''', (teacher_name,))
-    courses_taught = cursor.fetchall()
-    if courses_taught:
-        print(f"Courses taught by {teacher_name}:")
-        for course in courses_taught:
-            print(course[0])
-    else:
-        print(f"No courses found for {teacher_name}")
+# Генерація випадкового набору курсів для кожного викладача
+teacher_courses = {teacher: random.sample(courses, random.randint(1, 5)) for teacher in teachers}
 
-# Викликаємо функцію для знаходження курсів, які читає певний викладач
-find_courses_taught_by_teacher('Kathleen Sawyer')
+# Виведення випадкових відомостей про викладачів та курси
+print("Викладачі та курси:")
+for teacher, teacher_course_list in teacher_courses.items():
+    print(f"Викладач: {teacher}")
+    print("Курси:", ", ".join(teacher_course_list))
+    print()
 
-# Закриваємо підключення до бази даних
-conn.close()
+# Пошук курсів для певного викладача
+target_teacher = random.choice(teachers)
+print(f"Курси, які читає викладач {target_teacher}:")
+print(", ".join(teacher_courses[target_teacher]))
+
+def function_from_main5():
+    print("This is a function from main5.py")

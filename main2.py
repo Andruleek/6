@@ -1,34 +1,32 @@
-import sqlite3
 from faker import Faker
 import random
 
-
-# Ініціалізуємо Faker для генерації випадкових даних
+# Ініціалізуємо генератор Faker
 fake = Faker()
 
-# Підключаємося до бази даних
-conn = sqlite3.connect('university.db')
-cursor = conn.cursor()
+# Генеруємо фіктивну базу даних студентів та їхніх оцінок
+students = []
+for _ in range(50):  # Генеруємо 50 студентів
+    student = {
+        'name': fake.name(),
+        'math_grade': random.randint(60, 100),  # Оцінка з математики
+    }
+    students.append(student)
 
-# Завдання 2: Знаходження найкращого студента з певного предмета
-def find_top_student_in_subject(subject_name):
-    cursor.execute('''SELECT students.id, students.name, AVG(grades.grade) AS avg_grade
-                      FROM students
-                      JOIN grades ON students.id = grades.student_id
-                      JOIN subjects ON grades.subject_id = subjects.id
-                      WHERE subjects.name = ?
-                      GROUP BY students.id, students.name
-                      ORDER BY avg_grade DESC
-                      LIMIT 1''', (subject_name,))
-    top_student = cursor.fetchone()
-    if top_student:
-        print(f"Top student in {subject_name}:")
-        print(f"Student ID: {top_student[0]}, Name: {top_student[1]}, Average Grade: {top_student[2]}")
-    else:
-        print(f"No data found for {subject_name}")
+# Функція для знаходження студента з найвищим середнім балом з певного предмета
+def find_top_student(subject, student_list):
+    top_student = max(student_list, key=lambda x: x[subject+'_grade'])
+    return top_student
 
-# Викликаємо функцію для завдання 2
-find_top_student_in_subject('Mathematics')
+# Знаходимо студента з найвищим середнім балом з математики
+top_math_student = find_top_student('math', students)
 
-# Закриваємо підключення до бази даних
-conn.close()
+# Виводимо інформацію про студента з найвищим балом з математики
+print("Студент з найвищим балом з математики:")
+print("Ім'я:", top_math_student['name'])
+print("Бал з математики:", top_math_student['math_grade'])
+
+
+def function_from_main2():
+    print("This is a function from main.py")
+

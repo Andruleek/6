@@ -1,31 +1,33 @@
-import sqlite3
 from faker import Faker
 import random
 
-
-# Ініціалізуємо Faker для генерації випадкових даних
 fake = Faker()
 
-# Підключаємося до бази даних
-conn = sqlite3.connect('university.db')
-cursor = conn.cursor()
+# Генеруємо список студентів та їх груп
+def generate_students(num_students, num_groups):
+    students = []
+    for _ in range(num_students):
+        student = {
+            'name': fake.name(),
+            'group': random.randint(1, num_groups)
+        }
+        students.append(student)
+    return students
 
-# Викликаємо завдання 6
-def find_students_in_group(group_name):
-    cursor.execute('''SELECT students.name
-                      FROM students
-                      JOIN groups ON students.group_id = groups.id
-                      WHERE groups.name = ?''', (group_name,))
-    students_in_group = cursor.fetchall()
-    if students_in_group:
-        print(f"Students in group {group_name}:")
-        for student in students_in_group:
-            print(student[0])
-    else:
-        print(f"No students found in group {group_name}")
+# Знайти список студентів у певній групі
+def find_students_in_group(students, group_number):
+    return [student['name'] for student in students if student['group'] == group_number]
 
-# Викликаємо функцію для знаходження студентів у певній групі
-find_students_in_group('Group C')
+# Приклад використання
+if __name__ == "__main__":
+    num_students = 50
+    num_groups = 3
+    
+    students = generate_students(num_students, num_groups)
+    print("Список студентів у групах:")
+    for group_num in range(1, num_groups + 1):
+        group_students = find_students_in_group(students, group_num)
+        print(f"Група {group_num}: {group_students}")
 
-# Закриваємо підключення до бази даних
-conn.close()
+def function_from_main6():
+    print("This is a function from main6.py")
